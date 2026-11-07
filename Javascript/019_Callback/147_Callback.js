@@ -1,15 +1,25 @@
-function processUserInput(name, callback) {
-    callback(name);
+function processOrder(item, callback) {
+    console.log(`Processing order for ${item}...`);
+    callback();
 }
 
-function greet(name) {
-    console.log(`Hello, ${name}!`);
+// First method:
+
+function orderCompleted() {
+    console.log('Order completed through normal function!');
 }
+processOrder('Laptop', orderCompleted);
 
-processUserInput("Aravind", greet);
 
-processUserInput("Playwright", function(name) {
-    console.log(`Welcome, ${name}!`);
+// Second method:(Anonymous function)
+
+processOrder("Mobile", function() {
+    console.log('Order completed through anonymous function!');
 });
 
-//Hello aravind
+
+//  Third method:(Arrow function)
+
+processOrder("Tablet", () => {
+    console.log('Order completed through arrow function!');
+});
