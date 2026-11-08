@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Promise and await reference</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, Segoe UI, sans-serif; color: #1f2937; background: #f3f6fa; }
+    body { max-width: 1180px; margin: 2rem auto; padding: 0 1rem 2rem; line-height: 1.55; }
+    h1, h2 { color: #12355b; }
+    .table-wrap { overflow-x: auto; background: white; border: 1px solid #d5deea; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; min-width: 850px; }
+    th, td { padding: .7rem .8rem; border-bottom: 1px solid #d5deea; text-align: left; vertical-align: top; }
+    th { background: #e7eef8; color: #12355b; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: #edf1f7; border-radius: 3px; padding: .08rem .25rem; }
+    pre { overflow-x: auto; padding: 1rem; background: #17212f; color: #f2f6fc; border-radius: 6px; }
+    pre code { padding: 0; background: transparent; color: inherit; }
+    .note { padding: .8rem 1rem; background: #fff7df; border-left: 4px solid #d99a00; }
+  </style>
+</head>
+<body>
+  <h1>Promise and <code>await</code> Reference</h1>
+  <p>This reference covers examples in <code>Javascript/019_Callback</code>, <code>020_Promise</code>, and <code>021_Async_Await</code>. “Await?” means whether to use <code>await</code> when you need the resolved value before continuing; Promise chains using <code>.then()</code> are an alternative.</p>
+  <h2>File-by-file: <code>021_Async_Await/162</code>–<code>170</code></h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>File</th><th>Promise-returning functions/calls</th><th>Where <code>await</code> is used or needed</th></tr></thead>
+      <tbody>
+        <tr><td><code>162_async_await.js</code></td><td><code>apiRequest()</code> returns a Promise; async <code>runApiRequest()</code> returns a Promise.</td><td>It correctly awaits <code>apiRequest()</code>. The top-level call is not awaited; a caller that must wait should await/return it or attach <code>.catch()</code>.</td></tr>
+        <tr><td><code>163_async_await1.js</code></td><td>Async <code>testAPI()</code> returns a Promise; <code>Promise.reject(...)</code> returns a rejected Promise.</td><td>The rejection is awaited inside <code>try/catch</code>. The top-level call is not awaited, but the shown rejection is handled internally.</td></tr>
+        <tr><td><code>164_playwright_eg.ts</code></td><td><code>page.goto(...)</code> and the async test callback return Promises.</td><td><code>page.goto(...)</code> is correctly awaited. Playwright waits for the callback; do not await the <code>test(...)</code> registration.</td></tr>
+        <tr><td><code>165_playwright_eg1.ts</code></td><td>Async <code>getExmaple()</code>, <code>page.goto(...)</code>, and the async test callback return Promises.</td><td>Both <code>page.goto(...)</code> and <code>getExmaple()</code> are correctly awaited. Playwright waits for the callback.</td></tr>
+        <tr><td><code>166_sequential_execution.js</code></td><td><code>apiCall(name)</code> returns a Promise; async <code>sequentialTest()</code> returns a Promise.</td><td>The three calls are correctly awaited one after another. The top-level invocation is not awaited; await/return it when the caller needs completion.</td></tr>
+        <tr><td><code>167_Parallel_execution.js</code></td><td><code>apiCall(name)</code>, <code>Promise.all(...)</code>, and async <code>parallelTest()</code> return Promises.</td><td><code>Promise.all(...)</code> is correctly awaited, so calls run concurrently. The top-level invocation is not awaited; await/return it when the caller needs completion.</td></tr>
+        <tr><td><code>168_Flaky.js</code></td><td><code>createFlakyAPIs(...)</code> is synchronous and returns a function. Calling that function returns a fulfilled/rejected Promise. Async <code>retryTesting()</code> returns a Promise.</td><td>Current <code>await createFlakyAPIs(2)</code> only assigns the returned function; it does not call or await an attempt. Call the returned function and await it (correction below). The top-level <code>retryTesting()</code> call is also not awaited.</td></tr>
+        <tr><td><code>169_interview.js</code></td><td>Async <code>testFlow()</code> and each <code>Promise.resolve(...)</code> return Promises.</td><td>The three resolved Promises are correctly awaited in sequence. The top-level invocation is not awaited; await/return it when the caller needs completion.</td></tr>
+        <tr><td><code>170_interview1.js</code></td><td>Async <code>apiTest()</code> and <code>Promise.resolve(...)</code> return Promises. Commented-out <code>riskyTest()</code> would also return a Promise if enabled.</td><td><code>apiTest()</code> correctly awaits inside <code>try/catch/finally</code>. Its top-level invocation is not awaited, but the shown rejection path is handled internally. The commented example also awaits and catches its operation.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Function or call</th><th>Returns a Promise?</th><th>Should you <code>await</code> it?</th><th>Examples / notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>new Promise(...)</code></td><td>Yes</td><td>Usually consume it with <code>await</code> or <code>.then()</code>.</td><td><code>020_Promise/155</code>–<code>157</code>; <code>021_Async_Await/162</code>, <code>166</code>, <code>167</code>.</td></tr>
+        <tr><td><code>Promise.resolve(value)</code> / <code>Promise.reject(reason)</code></td><td>Yes</td><td>Await when you need the settled value/rejection here; otherwise use <code>.then()</code> / <code>.catch()</code>.</td><td><code>020_Promise/158</code>, <code>161</code>; <code>021_Async_Await/163</code>, <code>168</code>–<code>171</code>.</td></tr>
+        <tr><td><code>Promise.all(iterable)</code></td><td>Yes</td><td>Await for all values before continuing, or chain <code>.then()</code>.</td><td>Rejects as soon as an input rejects; <code>020_Promise/158</code>, <code>021_Async_Await/167</code>.</td></tr>
+        <tr><td><code>Promise.allSettled(iterable)</code></td><td>Yes</td><td>Await to inspect all outcomes, or chain <code>.then()</code>.</td><td>Waits for every input to settle; <code>020_Promise/159</code>.</td></tr>
+        <tr><td><code>Promise.race(iterable)</code></td><td>Yes</td><td>Await for the first settled outcome, or chain <code>.then()</code>.</td><td><code>020_Promise/160</code>.</td></tr>
+        <tr><td><code>.then(onFulfilled)</code></td><td>Yes, a new chained Promise</td><td>Optional; await for the chain's final value/order, or continue chaining.</td><td>Return a Promise in its callback to make the chain wait for it.</td></tr>
+        <tr><td><code>.catch(onRejected)</code></td><td>Yes, a new chained Promise</td><td>Optional; handle rejection in the chain or with <code>try/catch</code> around <code>await</code>.</td><td><code>020_Promise/155</code>–<code>161</code>.</td></tr>
+        <tr><td><code>.finally(onFinally)</code></td><td>Yes, a new chained Promise</td><td>Optional; it remains part of the chain and does not itself consume the result.</td><td><code>020_Promise/156</code>, <code>158</code>–<code>161</code>.</td></tr>
+        <tr><td><code>apiRequest()</code>, <code>apiCall(name)</code></td><td>Yes</td><td>Yes when the response is needed before continuing.</td><td>User-defined functions in <code>021_Async_Await/162</code>, <code>166</code>, <code>167</code>.</td></tr>
+        <tr><td><code>openBrowser()</code>, <code>LoadHomePage()</code>, <code>EnterCredentials()</code>, <code>Login()</code></td><td>Yes</td><td>Not in the current example: the <code>.then()</code> chain consumes the first three. Await if rewriting as async/await.</td><td><code>020_Promise/157</code>; <code>Login()</code> is defined but not called.</td></tr>
+        <tr><td><code>sequentialTest()</code>, <code>parallelTest()</code>, <code>runApiRequest()</code>, <code>testAPI()</code>, <code>testFlow()</code>, <code>apiTest()</code>, <code>retryTesting()</code>, <code>test()</code> in file 171</td><td>Yes, each is <code>async</code></td><td>Await when the caller must wait; otherwise handle the returned Promise with <code>.then()</code>/<code>.catch()</code>.</td><td>Every async function returns a Promise, even without an explicit return value.</td></tr>
+        <tr><td><code>getExmaple()</code></td><td>Yes, because it is <code>async</code></td><td>Yes if the result is needed; the example awaits it.</td><td>Resolves to <code>"abc"</code>; <code>021_Async_Await/165</code>.</td></tr>
+        <tr><td><code>retry()</code> returned by <code>createFlakyAPIs(...)</code></td><td>Yes, when called</td><td>Await the call <code>retry()</code>, not the factory returning it.</td><td><code>021_Async_Await/168</code>; see correction below.</td></tr>
+        <tr><td><code>page.goto(url)</code></td><td>Yes, Playwright navigation Promise</td><td>Yes, or return it from the test, so the test waits for navigation.</td><td><code>021_Async_Await/164</code>–<code>165</code>.</td></tr>
+        <tr><td><code>test(title, async ({ page }) =&gt; ...)</code> callback</td><td>The async callback returns a Promise</td><td>No extra await on <code>test(...)</code> registration. Playwright waits for the callback; await async calls inside it.</td><td><code>021_Async_Await/164</code>–<code>165</code>.</td></tr>
+        <tr><td>Async callback passed to <code>test(...)</code> in <code>019_Callback/148</code></td><td>The async callback returns a Promise</td><td>The shown custom <code>test</code> calls the callback without returning or awaiting it, so it does not wait for that Promise.</td><td>This custom function differs from Playwright's test runner.</td></tr>
+        <tr><td><code>setTimeout(callback, delay)</code></td><td>No; returns a timer handle</td><td>No. Wrap it in a Promise if an awaitable delay is needed.</td><td><code>019_Callback/150</code>–<code>151</code>; also inside Promise constructors in <code>020_Promise/160</code> and <code>021_Async_Await/166</code>–<code>167</code>.</td></tr>
+        <tr><td>Callback-based <code>processOrder(...)</code>, <code>step1(...)</code>–<code>step4(...)</code></td><td>No Promise is returned by the shown implementations</td><td>No; the callback controls what runs next.</td><td><code>019_Callback/147</code>–<code>154</code>. External callback APIs in file 152 have no implementation here, so their return types are unknown.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h2>Correction in <code>021_Async_Await/168_Flaky.js</code></h2>
+  <p class="note"><code>createFlakyAPIs(2)</code> returns a function, not a Promise. Awaiting the factory does not wait for an attempt. Call the returned function and await that Promise:</p>
+  <pre><code>async function retryTesting() {
+    const retry = createFlakyAPIs(2);
+    const result = await retry();
+    console.log(result);
+}</code></pre>
+  <h2>Rule of thumb</h2>
+  <ul>
+    <li>Use <code>await</code> inside an async function when the next statement needs the settled value or must wait for completion.</li>
+    <li>Use <code>return</code> when passing a Promise through a function or Promise-chain callback.</li>
+    <li>Use <code>.then()</code>/<code>.catch()</code> instead of <code>await</code> when that style fits the surrounding code.</li>
+    <li>Do not add <code>await</code> to ordinary synchronous calls or callback registration.</li>
+  </ul>
+</body>
+</html>
