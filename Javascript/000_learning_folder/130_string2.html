@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>130_string2 - String.charAt() vs String.at()</title>
+</head>
+<body>
+  <h1><code>charAt(0)</code> vs <code>at(0)</code></h1>
+  <p>Both methods return the character at index <code>0</code>.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Feature</th>
+        <th scope="col"><code>abc.charAt(0)</code></th>
+        <th scope="col"><code>abc.at(0)</code></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Result</th>
+        <td><code>"a"</code></td>
+        <td><code>"a"</code></td>
+      </tr>
+      <tr>
+        <th scope="row">Negative indexes</th>
+        <td>Not supported; returns <code>""</code></td>
+        <td>Counts from the end; <code>abc.at(-1)</code> returns <code>"c"</code></td>
+      </tr>
+      <tr>
+        <th scope="row">Index out of range</th>
+        <td>Returns <code>""</code></td>
+        <td>Returns <code>undefined</code></td>
+      </tr>
+      <tr>
+        <th scope="row">Browser support</th>
+        <td>Older and widely supported</td>
+        <td>Newer (ES2022)</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

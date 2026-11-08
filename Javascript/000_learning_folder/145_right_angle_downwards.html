@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Downward Right-Angled Triangle (ELI5)</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #172033;
+      background: #f3f6fb;
+    }
+
+    body {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    main {
+      padding: 28px;
+      border: 1px solid #dce3ee;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 12px 32px #17203312;
+    }
+
+    h1 { margin-top: 0; }
+
+    pre {
+      overflow-x: auto;
+      padding: 18px;
+      border-radius: 10px;
+      color: #edf2ff;
+      background: #172033;
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #dce3ee;
+      text-align: left;
+    }
+
+    .note {
+      padding: 14px 16px;
+      border-left: 4px solid #7894ca;
+      background: #f1f5ff;
+    }
+
+    .output {
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #eaf8ef;
+    }
+
+    @media (max-width: 600px) {
+      body { margin: 20px auto; }
+      main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Downward Right-Angled Triangle (ELI5)</h1>
+    <p>
+      This program prints a triangle of stars. It starts with a wide row and
+      makes each next row one star shorter.
+    </p>
+
+    <h2>Imagine three rows of stars</h2>
+    <p>The first row gets 3 stars, the next gets 2, and the last gets 1.</p>
+    <pre class="output" aria-label="Three rows of stars"><code>* * *
+* *
+*</code></pre>
+
+    <h2>Two loop helpers</h2>
+    <p>
+      Think of the loops as two helpers: the outer loop picks how many stars
+      a row should have, and the inner loop puts those stars on that row.
+    </p>
+
+    <h3>1. Choose the starting row size</h3>
+    <pre><code>let n = 3;</code></pre>
+    <p><code>n</code> says the first row starts with 3 stars.</p>
+
+    <h3>2. Pick how many stars this row gets</h3>
+    <pre><code>for (let i = n; i &gt;= 1; i--) {</code></pre>
+    <p>
+      The outer loop starts <code>i</code> at 3. After each row,
+      <code>i--</code> takes away one. The row sizes are 3, then 2, then 1.
+      When <code>i</code> becomes 0, the condition <code>i &gt;= 1</code> is
+      false, so the loop stops.
+    </p>
+
+    <h3>3. Put stars on that row</h3>
+    <pre><code>    for (let j = 1; j &lt;= i; j++) {
+        process.stdout.write("* ");
+    }</code></pre>
+    <p>
+      Every row starts counting again at <code>j = 1</code>. The inner loop
+      writes a star while <code>j</code> is less than or equal to
+      <code>i</code>, so it writes exactly as many stars as the current
+      value of <code>i</code>.
+    </p>
+    <p class="note">
+      <strong>Why use <code>process.stdout.write</code>?</strong>
+      It writes the stars without moving to the next line, so they stay
+      together on the same row.
+    </p>
+
+    <h3>4. Start the next row</h3>
+    <pre><code>    console.log("");</code></pre>
+    <p>
+      After all the stars for a row are written, this moves the output to the
+      next line.
+    </p>
+
+    <h2>Follow the loop</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Outer loop <code>i</code></th>
+          <th scope="col">Stars written</th>
+          <th scope="col">Row</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>3</td><td>3</td><td><code>* * *</code></td></tr>
+        <tr><td>2</td><td>2</td><td><code>* *</code></td></tr>
+        <tr><td>1</td><td>1</td><td><code>*</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>In short</h2>
+    <ul>
+      <li><code>i</code> decides how many stars the current row gets.</li>
+      <li><code>j</code> counts the stars on that row.</li>
+      <li><code>i--</code> makes each new row shorter.</li>
+      <li><code>console.log("")</code> moves to the next row.</li>
+    </ul>
+
+    <p>
+      <a href="../018_MultiDimensionalArray/145_RightAngleDownwards.js">
+        View the original JavaScript file
+      </a>
+      ·
+      <a href="145_right_angle_downwards.md">Read the Markdown explanation</a>
+    </p>
+  </main>
+</body>
+</html>

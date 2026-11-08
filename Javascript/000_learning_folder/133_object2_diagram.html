@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JavaScript Object References: Diagram</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #172033;
+      background: #f3f6fb;
+    }
+
+    body {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    main {
+      padding: 28px;
+      border: 1px solid #dce3ee;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 12px 32px #17203312;
+    }
+
+    h1 { margin-top: 0; }
+
+    pre {
+      overflow-x: auto;
+      padding: 18px;
+      border-radius: 10px;
+      color: #edf2ff;
+      background: #172033;
+      line-height: 1.6;
+    }
+
+    .diagram {
+      display: block;
+      width: 100%;
+      max-width: 620px;
+      height: auto;
+      margin: 20px auto;
+    }
+
+    .output {
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #eaf8ef;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      padding-left: 24px;
+    }
+
+    .steps li {
+      padding-left: 6px;
+    }
+
+    .step-title {
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .memory {
+      overflow-x: auto;
+      padding: 16px;
+      border: 1px solid #dce3ee;
+      border-radius: 10px;
+      background: #f8faff;
+      line-height: 1.7;
+    }
+
+    .important {
+      padding: 14px 16px;
+      border-left: 4px solid #7894ca;
+      background: #f1f5ff;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Why does <code>a.status</code> become <code>"fail"</code>?</h1>
+    <p>
+      The key is that <code>a</code> and <code>b</code> point to the same
+      object. Think of one toy box with two labels attached to it.
+    </p>
+
+    <pre><code>let a = { status: "pass" };
+let b = a;  // Copy the reference
+b.status = "fail";
+console.log(a.status);</code></pre>
+
+    <h2>Step-by-step</h2>
+    <ol class="steps">
+      <li>
+        <div class="step-title">Create the object</div>
+        <code>let a = { status: "pass" };</code> creates one object. Its
+        <code>status</code> property starts as <code>"pass"</code>, and
+        <code>a</code> refers to that object.
+        <div class="memory">
+          <code>a</code> &rarr; <code>{ status: "pass" }</code>
+        </div>
+      </li>
+      <li>
+        <div class="step-title">Copy the reference, not the object</div>
+        <code>let b = a;</code> makes <code>b</code> refer to the very same
+        object. It does not create another object.
+        <svg class="diagram" viewBox="0 0 620 280" role="img"
+         aria-labelledby="diagram-title diagram-description">
+          <title id="diagram-title">a and b both refer to the same object</title>
+          <desc id="diagram-description">
+            Arrows from a and b both point to one object whose status is pass
+            before the change.
+          </desc>
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5"
+                    orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L10,5 L0,10 z" fill="#536b9a"></path>
+            </marker>
+          </defs>
+          <rect x="30" y="35" width="130" height="58" rx="12" fill="#eaf1ff"
+                stroke="#7894ca" stroke-width="2"></rect>
+          <text x="95" y="71" text-anchor="middle" font-size="20" font-family="system-ui">
+            a
+          </text>
+          <rect x="30" y="185" width="130" height="58" rx="12" fill="#eaf1ff"
+                stroke="#7894ca" stroke-width="2"></rect>
+          <text x="95" y="221" text-anchor="middle" font-size="20" font-family="system-ui">
+            b
+          </text>
+          <path d="M160 64 C260 64 270 105 350 125" fill="none" stroke="#536b9a"
+                stroke-width="3" marker-end="url(#arrow)"></path>
+          <path d="M160 214 C260 214 270 175 350 155" fill="none" stroke="#536b9a"
+                stroke-width="3" marker-end="url(#arrow)"></path>
+          <rect x="365" y="95" width="220" height="90" rx="14" fill="#fff4dd"
+                stroke="#d7a544" stroke-width="2"></rect>
+          <text x="475" y="130" text-anchor="middle" font-size="17" font-family="system-ui">
+            one shared object
+          </text>
+          <text x="475" y="158" text-anchor="middle" font-size="17" font-family="system-ui">
+            status: "pass"
+          </text>
+        </svg>
+      </li>
+      <li>
+        <div class="step-title">Change the shared object's property</div>
+        <code>b.status = "fail";</code> follows <code>b</code> to the object
+        and changes its <code>status</code>. Since <code>a</code> points to
+        that same object, the object's status is now <code>"fail"</code> for
+        both names.
+        <div class="memory">
+          <code>a</code> &rarr; <code>{ status: "fail" }</code><br>
+          <code>b</code> &rarr; <code>{ status: "fail" }</code>
+          <span>(both arrows lead to the same object)</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-title">Read the property through <code>a</code></div>
+        <code>console.log(a.status);</code> follows <code>a</code> to that
+        object and reads its current status: <code>"fail"</code>.
+      </li>
+    </ol>
+
+    <p class="important">
+      <strong>Important:</strong> <code>a</code> itself was not changed to
+      point somewhere else. The object it points to was changed through
+      <code>b</code>.
+    </p>
+    <p class="output"><strong>Console output:</strong> <code>fail</code></p>
+    <p>
+      <a href="../017_Objects/133_object2.js">View the original JavaScript file</a>
+    </p>
+  </main>
+</body>
+</html>

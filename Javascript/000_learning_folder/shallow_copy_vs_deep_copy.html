@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shallow Copy vs Deep Copy (ELI5)</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      color: #172033;
+      background: #f3f6fb;
+    }
+
+    body {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    main {
+      padding: 28px;
+      border: 1px solid #dce3ee;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 12px 32px #17203312;
+    }
+
+    h1 { margin-top: 0; }
+
+    pre {
+      overflow-x: auto;
+      padding: 18px;
+      border-radius: 10px;
+      color: #edf2ff;
+      background: #172033;
+      line-height: 1.6;
+    }
+
+    .note {
+      padding: 14px 16px;
+      border-left: 4px solid #7894ca;
+      background: #f1f5ff;
+    }
+
+    @media (max-width: 600px) {
+      body { margin: 20px auto; }
+      main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Shallow Copy vs Deep Copy (ELI5)</h1>
+    <p>
+      Think of an object as a toy box, and an object variable as a note
+      pointing to that box.
+    </p>
+
+    <h2>Same reference: both variables point to one object</h2>
+    <pre><code>let obj1 = { val: 10 };
+let obj2 = obj1;
+
+obj2.val = 99;
+console.log(obj1.val); // 99</code></pre>
+    <p>
+      <code>obj2 = obj1</code> copies the reference (the note), not the
+      object. Both variables point to the same object, so changing it through
+      either variable is visible through the other. This is often casually
+      called “call by reference.”
+    </p>
+    <p class="note">
+      <strong>Technically:</strong> JavaScript passes values. For objects,
+      the value being copied is a reference to the object.
+    </p>
+
+    <h2>Shallow copy: a new outer object, shared nested objects</h2>
+    <pre><code>const original = { name: "Sam", toy: { color: "red" } };
+const shallow = { ...original };
+
+shallow.name = "Alex";
+console.log(original.name); // "Sam" — top-level values are separate
+
+shallow.toy.color = "blue";
+console.log(original.toy.color); // "blue" — nested object is shared</code></pre>
+    <p>
+      The spread syntax creates a new outer object, but the nested
+      <code>toy</code> object is still shared.
+    </p>
+
+    <h2>Deep copy: separate objects all the way down</h2>
+    <pre><code>const original = { name: "Sam", toy: { color: "red" } };
+const deep = structuredClone(original);
+
+deep.toy.color = "blue";
+console.log(original.toy.color); // "red" — nested object is separate</code></pre>
+    <p>
+      <code>structuredClone()</code> creates a separate copy of the object
+      and its nested data.
+    </p>
+
+    <h2>In short</h2>
+    <ul>
+      <li><code>obj2 = obj1</code>: both variables refer to the same object.</li>
+      <li>Shallow copy: new outer object, but nested objects may still be shared.</li>
+      <li>Deep copy: nested objects are copied too, so changes do not affect the original.</li>
+    </ul>
+  </main>
+</body>
+</html>
