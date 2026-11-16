@@ -8,4 +8,4 @@ apiCall.then(function(data){
     console.log(err);
 }).finally(function(){
     console.log("This will be printed always");
-});      
+});     

@@ -1,10 +1,10 @@
-async function getExmaple(){
+async function getExample(){
     return "abc";
 }
 
 
-import { test} from '@playwright/test';
+import {test} from '@playwright/test';
 test('user say hello', async ({ page})=>{
             let t = await page.goto("https://sdetclub.com/");
-            let c =await getExmaple();
+            let c =await getExample();
 });
