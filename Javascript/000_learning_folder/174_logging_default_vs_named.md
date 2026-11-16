@@ -1,7 +1,7 @@
 # Default and Named Exports (ELI5)
 
 Source: [174_logging.js](../022_Import_export/174_logging.js) and [logger.js](../022_Import_export/logs/logger.js)
-HTML version: [174_logging.html](174_logging.html)
+HTML version: [174_logging_default_vs_named.html](174_logging_default_vs_named.html)
 
 Think of a JavaScript file like a toolbox. It can offer one main tool and other tools you can choose by name.
 
