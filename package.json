@@ -1,0 +1,25 @@
+{
+  "name": "playwrightcourse",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/a4aravind/Playwright#readme",
+  "bugs": {
+    "url": "https://github.com/a4aravind/Playwright/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a4aravind/Playwright.git"
+  },
+  "license": "ISC",
+  "author": "Aravind S",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6"
+  }
+}
