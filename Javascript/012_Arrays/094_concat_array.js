@@ -7,3 +7,6 @@ console.log(c);
 
 let d = [...a, ...b];
 console.log(d);
+
+console.log([...a]);
+console.log([...b]);

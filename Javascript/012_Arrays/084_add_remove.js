@@ -31,5 +31,8 @@ console.log(arr);
 arr.splice(1,2,10,20);
 console.log(arr);
 
+arr.splice(1,2,100);
+console.log(arr);
+
 arr.splice(1,0,2,3);
 console.log(arr);
