@@ -19,7 +19,6 @@
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.65.1",
     "@types/node": "^26.6.6"
   }
 }
