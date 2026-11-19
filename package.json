@@ -3,22 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "homepage": "https://github.com/a4aravind/Playwright#readme",
-  "bugs": {
-    "url": "https://github.com/a4aravind/Playwright/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/a4aravind/Playwright.git"
-  },
+  "bugs": { "url": "https://github.com/a4aravind/Playwright/issues" },
+  "repository": { "type": "git", "url": "git+https://github.com/a4aravind/Playwright.git" },
   "license": "ISC",
   "author": "Aravind S",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {},
-  "dependencies": {
-    "prompt-sync": "^4.2.0"
-  },
+  "dependencies": { "prompt-sync": "^4.2.0" },
   "devDependencies": {
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

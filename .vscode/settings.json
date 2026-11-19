@@ -1,0 +1,16 @@
+{
+  "code-runner.executorMap": {
+    "typescript": "npx ts-node"
+  },
+  "[javascript]": {
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.inlineSuggest.enabled": false,
+    "editor.parameterHints.enabled": false,
+    "editor.wordBasedSuggestions": "off"
+  }
+}
