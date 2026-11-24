@@ -1,5 +1,5 @@
 function greet(name: string): string {
-    return `Hello, !`;
+    return `Hello, ${name}!`;
 }
 
 function greet1(name: string): number {
@@ -11,5 +11,5 @@ function greet2(name: string): boolean {
 }
 
 function greet3(name: string): void {
-    console.log(`Hello, !`);
+    console.log(`Hello, ${name}!`);
 }
